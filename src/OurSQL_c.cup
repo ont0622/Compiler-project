@@ -1,0 +1,15 @@
+/* ----------------------Preliminary Declarations Section--------------------*/
+
+/* Import the class java_cup.runtime.*  */
+import java_cup.runtime.*;
+
+action code {:
+:}
+
+parser code {:
+
+:}
+
+non terminal Object sql_start, select_stmt, opt_distinct, select_list, from_clause, opt_where_clause, column_ref
+non terminal Object table_ref_commalist, table_ref, table, range_variable, search_condition, predicate, pred
+non terminal Object comparison_pred, scalar_exp, literal, in_pred, exists_pred
