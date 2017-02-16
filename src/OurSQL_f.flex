@@ -38,6 +38,9 @@ newline = \r|\n|\r\n
 /*      Lexical Rules Section                  */
 %%
 
-
-
-
+{number}    { return symbol(sym.NUMBER, new Integer(yytext())); }
+{ident}     { return symbol(sym.IDENT); }
+{space}     { /* return something? */ }
+{newline}   { return symbol(sym.NEWLINE); }
+.           { return symbol(sym.PERIOD);  }
+,           { return symbol(sym.COMMA);   }
