@@ -70,6 +70,7 @@ newline = \r|\n|\r\n
 "."             { return symbol(sym.PERIOD);    }
 ","             { return symbol(sym.COMMA);     }
 "from"          { return symbol(sym.FROM);      }
+"distinct"      { return symbol(sym.DISTINCT);  }
 "select"        { return symbol(sym.SELECT);    }
 "where"         { return symbol(sym.WHERE);     }
 "exists"        { return symbol(sym.EXISTS);    }
@@ -81,7 +82,7 @@ newline = \r|\n|\r\n
 
 
 {number}    { return symbol(sym.NUMBER, new Integer(yytext())); }
-{ident}     { return symbol(sym.IDENT); }
+{ident}     { return symbol(sym.IDENT, new String(yytext()))); }
 {space}     { /* Ignore */ }
 
 }
