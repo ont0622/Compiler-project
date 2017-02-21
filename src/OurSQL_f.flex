@@ -12,10 +12,13 @@
 import java.io.*;
 import java_cup.runtime.*;
 
-/*      Usercode Section    */
 
 %%
 
+/*      Usercode Section    */
+
+
+/* -----------------Options and Declarations Section----------------- */
 
 /*
    The name of the class JFlex will create will be Lexer.
@@ -50,25 +53,24 @@ import java_cup.runtime.*;
         return new Symbol(type, yyline, yycolumn, value);
     }
 %}
-
-/*      Options and Declarations Section       */
-%%
 /*      Macro Declaration                      */
 
 number = [0-9]+
-ident = [A-Za_z_][A-Za-z_0-9]*
+
+ident = [A-Za-z_][A-Za-z_0-9]*
+
 space = [\ \t]
+
 newline = \r|\n|\r\n
 
 
+%%
 
 /*      Lexical Rules Section                  */
-%%
+
 <YYINITIAL>{
 
-
-"."             { return symbol(sym.PERIOD);    }
-","             { return symbol(sym.COMMA);     }
+";"             { return symbol(sym.SEMI);      }
 "from"          { return symbol(sym.FROM);      }
 "distinct"      { return symbol(sym.DISTINCT);  }
 "select"        { return symbol(sym.SELECT);    }
@@ -79,11 +81,14 @@ newline = \r|\n|\r\n
 "and"           { return symbol(sym.AND);       }
 "("             { return symbol(sym.LPAREN);    }
 ")"             { return symbol(sym.RPAREN);    }
+"."             { return symbol(sym.PERIOD);    }
+","             { return symbol(sym.COMMA);     }
 
 
 {number}    { return symbol(sym.NUMBER, new Integer(yytext())); }
-{ident}     { return symbol(sym.IDENT, new String(yytext()))); }
+{ident}     { return symbol(sym.IDENT, new String(yytext())); }
 {space}     { /* Ignore */ }
+{newline}   { /* Ignore */ }
 
 }
 
