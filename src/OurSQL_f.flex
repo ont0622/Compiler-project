@@ -57,7 +57,9 @@ import java_cup.runtime.*;
 
 number = [0-9]+
 
-ident = [A-Za-z_][A-Za-z_0-9]*
+ident = [:jletter:] [:jletterdigit:]*
+
+string = "'" [:jletterdigit:]* "'" | "\"" [:jletterdigit:]* "\""
 
 space = [\ \t]
 
@@ -70,23 +72,25 @@ newline = \r|\n|\r\n
 
 <YYINITIAL>{
 
-";"             { return symbol(sym.SEMI);      }
-"from"          { return symbol(sym.FROM);      }
-"distinct"      { return symbol(sym.DISTINCT);  }
-"select"        { return symbol(sym.SELECT);    }
-"where"         { return symbol(sym.WHERE);     }
-"exists"        { return symbol(sym.EXISTS);    }
-"in"            { return symbol(sym.IN);        }
-"not"           { return symbol(sym.NOT);       }
-"and"           { return symbol(sym.AND);       }
-"("             { return symbol(sym.LPAREN);    }
-")"             { return symbol(sym.RPAREN);    }
-"."             { return symbol(sym.PERIOD);    }
-","             { return symbol(sym.COMMA);     }
+";"             { System.out.println(";"); return symbol(sym.SEMI);      }
+"from"          { System.out.println("FROM"); return symbol(sym.FROM);      }
+"distinct"      { System.out.println("DISTINCT"); return symbol(sym.DISTINCT);  }
+"select"        { System.out.println("SELECT"); return symbol(sym.SELECT);    }
+"where"         { System.out.println("WHERE"); return symbol(sym.WHERE);     }
+"exists"        { System.out.println("EXISTS"); return symbol(sym.EXISTS);    }
+"in"            { System.out.println("IN"); return symbol(sym.IN);        }
+"not"           { System.out.println("NOT"); return symbol(sym.NOT);       }
+"and"           { System.out.println("AND"); return symbol(sym.AND);       }
+"="    { System.out.println("COMPARISON"); return symbol(sym.COMPARISON);}
+"("             { System.out.println("("); return symbol(sym.LPAREN);    }
+")"             { System.out.println(")"); return symbol(sym.RPAREN);    }
+"."             { System.out.println("."); return symbol(sym.PERIOD);    }
+","             { System.out.println(","); return symbol(sym.COMMA);     }
 
 
-{number}    { return symbol(sym.NUMBER, new Integer(yytext())); }
-{ident}     { return symbol(sym.IDENT, new String(yytext())); }
+{number}    { System.out.println("number: " + yytext()); return symbol(sym.INTNUM, new Integer(yytext())); }
+{ident}     { System.out.println("ident: " + yytext()); return symbol(sym.NAME, new String(yytext())); }
+{string}    { System.out.println("string: " + yytext()); return symbol(sym.STRING, new String(yytext())); }
 {space}     { /* Ignore */ }
 {newline}   { /* Ignore */ }
 

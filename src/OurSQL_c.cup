@@ -74,9 +74,9 @@ parser code {:
 /* ------------Declaration of Terminals and Non Terminals Section----------- */
 
 
-terminal            SEMI, FROM, DISTINCT, SELECT, WHERE, EXISTS, IN, NOT, AND, LPAREN, RPAREN, PERIOD, COMMA;
-terminal Integer    NUMBER;
-terminal String     IDENT;
+terminal            SEMI, FROM, DISTINCT, SELECT, WHERE, EXISTS, IN, NOT, AND, COMPARISON, LPAREN, RPAREN, PERIOD, COMMA;
+terminal Integer    INTNUM;
+terminal String     STRING;
 
 non terminal Object sql_start, select_stmt, opt_distinct, select_list, from_clause, opt_where_clause, column_ref;
 non terminal Object table_ref_commalist, table_ref, table, range_variable, search_condition, predicate, pred;
@@ -104,7 +104,7 @@ non terminal Object comparison_pred, scalar_exp, literal, in_pred, exists_pred;
     <literal> ::= STRING | INTNUM
     <in_pred> ::= <scalar_exp> IN '(' <select_stmt> ')'
     <exists_pred> ::= EXISTS '(' <select_stmt> ')'
-*/
+------------------------------------------------------------------------*/
 
 sql_start       ::= select_stmt:ss SEMI
                     {: System.out.println("No Syntax Error"); :}
@@ -114,7 +114,9 @@ select_stmt     ::= SELECT opt_distinct:od select_list:sl from_clause:fc opt_whe
                     {: :}
 ;
 
-opt_distinct    ::= DISTINCT
+opt_distinct    ::= /* empty */
+                    |
+                    DISTINCT
                     {: :}
 ;
 
@@ -129,5 +131,84 @@ column_ref      ::= IDENT:n
                     {: :}
                     |
                     IDENT:n1 PERIOD IDENT:n2
+                    {: :}
+;
+
+from_clause     ::= FROM table_ref_commalist
+                    {: :}
+;
+
+table_ref_commalist ::= table_ref
+                    {: :}
+                    |
+                    table range_variable
+                    {: :}
+;
+
+table           ::= NAME:n
+                    {: :}
+;
+
+range_variable  ::= NAME:n
+                    {: :}
+;
+
+opt_where_cluase ::= /* empty */
+                    |
+                    where_clause
+                    {: :}
+;
+
+where_cluase    ::= WHERE search_condition
+                    {: :}
+;
+
+search_condition ::= predicate
+                    {: :}
+                    |
+                    search_condition AND predicate
+                    {: :}
+;
+
+predicate       ::= pred
+                    {: :}
+                    |
+                    NOT pred
+                    {: :}
+;
+
+pred            ::= comparison_pred
+                    {: :}
+                    |
+                    in_pred
+                    {: :}
+                    |
+                    exists_pred
+                    {: :}
+;
+
+comparison_pred ::= scalar_exp COMPARISON scalar_exp
+                    {: :}
+;
+
+scalar_exp      ::= literal
+                    {: :}
+                    |
+                    column_ref
+                    {: :}
+;
+
+literal         ::= STRING:i
+                    {: :}
+                    |
+                    INTNUM:n
+                    {: :}
+;
+
+in_pred         ::= scalar_exp IN LPAREN select_stmt RPAREN
+                    {: :}
+;
+
+exists_pred     ::= EXISTS LPAREN select_stmt RPAREN
                     {: :}
 ;
