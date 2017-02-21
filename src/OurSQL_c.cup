@@ -8,10 +8,13 @@
 
 /* ----------------------Preliminary Declarations Section--------------------*/
 
-/* Import the class java_cup.runtime.*  */
 import java_cup.runtime.*;
 import java.io.*;
 import java.util.*;
+
+action code {:
+
+:}
 
 parser code {:
 
@@ -68,10 +71,10 @@ parser code {:
 :};
 
 
-
 /* ------------Declaration of Terminals and Non Terminals Section----------- */
 
-terminal            PERIOD, COMMA, FROM, SELECT, WHERE, EXISTS, IN, NOT, AND, LPAREN, RPAREN;
+
+terminal            SEMI, FROM, DISTINCT, SELECT, WHERE, EXISTS, IN, NOT, AND, LPAREN, RPAREN, PERIOD, COMMA;
 terminal Integer    NUMBER;
 terminal String     IDENT;
 
@@ -82,9 +85,8 @@ non terminal Object comparison_pred, scalar_exp, literal, in_pred, exists_pred;
 /*------------------------------ Grammar ------------------------------*/
 /*
     <sql_start> ::=<select_stmt> SEMI
-    <select_stmt> ::=
-     SELECT <opt_distinct> <select_list> <from_clause> <opt_where_clause>
-    <opt_distinct> ::= /* empty */ | DISTINCT
+    <select_stmt> ::= SELECT <opt_distinct> <select_list> <from_clause> <opt_where_clause>
+    <opt_distinct> ::= / empty / | DISTINCT
     <select_list> ::= <column_ref> | <select_list> ',' <column_ref>
     <column_ref> ::= NAME | NAME '.' NAME
     <from_clause> ::= FROM <table_ref_commalist>
@@ -92,7 +94,7 @@ non terminal Object comparison_pred, scalar_exp, literal, in_pred, exists_pred;
     <table_ref> ::= <table> | <table> <range_variable>
     <table> ::= NAME
     <range_variable> ::= NAME
-    <opt_where_clause> ::= /* empty */ | <where_clause>
+    <opt_where_clause> ::= / empty / | <where_clause>
     <where_clause> ::= WHERE <search_condition>
     <search_condition> ::= <predicate> | <search_condition> AND <predicate>
     <predicate> ::= <pred> | NOT <pred>
@@ -109,18 +111,23 @@ sql_start       ::= select_stmt:ss SEMI
 ;
 
 select_stmt     ::= SELECT opt_distinct:od select_list:sl from_clause:fc opt_where_clause:wc
-                    {:  :}
+                    {: :}
 ;
 
-opt_distinct    ::= /*empty*/
-                    |
-                    DISTINCT
-                    {:  :}
+opt_distinct    ::= DISTINCT
+                    {: :}
 ;
 
 select_list     ::= column_ref:col
-                    {:  :}
+                    {: :}
                     |
                     select_list:sl COMMA column_ref:col
-                    {:  :}
+                    {: :}
+;
+
+column_ref      ::= IDENT:n
+                    {: :}
+                    |
+                    IDENT:n1 PERIOD IDENT:n2
+                    {: :}
 ;
