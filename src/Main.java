@@ -16,16 +16,23 @@ public class Main {
           System.out.print("SQL> ");
           String next="";
           String userInput = "";
+          ArrayList<String> inputList = new ArrayList<String>();
           Scanner in = new Scanner(System.in);
-          while(!userInput.contains(";")){
-            userInput += in.next();
-            System.out.println("Current String: "+ userInput);
+          inputList.add(" ");
+          while(!inputList.get(inputList.size()-1).contains(";")){
+            inputList.add(in.next());
           }
-          System.out.println("Final input: "+userInput);
+          for (int i = 1; i < inputList.size(); i++){
+              userInput += inputList.get(i) + " ";
+          }
+          if (userInput.contains("exit")){
+              System.exit(1);
+          }
           if (userInput.contains("@")){
             String fileName;
             fileName = userInput.replace("@", "");
             fileName = fileName.replace(";", "");
+            fileName = fileName.replace(" ", "");
             fileName += ".txt";
             System.out.println("File name: " + fileName);
             parser p = new parser(new Lexer(new FileReader(fileName)));

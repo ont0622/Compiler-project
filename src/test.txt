@@ -1,9 +1,1 @@
-select distinct cname
-from   customers
-where  cno in (select cno
-from   orders
-where  ono in (select ono
-from   odetails
-where  pno in (select pno
-from   parts
-where  color = 'Red')));
+"hello world" 

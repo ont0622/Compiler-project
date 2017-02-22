@@ -59,6 +59,7 @@ number = [0-9]+
 
 ident = [:jletter:] [:jletterdigit:]*
 
+/* for the string literals, it will accept any string or number with ' ' or " " between them */
 string = "'" [:jletterdigit:]* "'" | "\"" [:jletterdigit:]* "\""
 
 space = [\ \t]
@@ -72,27 +73,26 @@ newline = \r|\n|\r\n
 
 <YYINITIAL>{
 
-";"             { System.out.println(";"); return symbol(sym.SEMI);      }
-"from"          { System.out.println("FROM"); return symbol(sym.FROM);      }
-"distinct"      { System.out.println("DISTINCT"); return symbol(sym.DISTINCT);  }
-"select"        { System.out.println("SELECT"); return symbol(sym.SELECT);    }
-"where"         { System.out.println("WHERE"); return symbol(sym.WHERE);     }
-"exists"        { System.out.println("EXISTS"); return symbol(sym.EXISTS);    }
-"in"            { System.out.println("IN"); return symbol(sym.IN);        }
-"not"           { System.out.println("NOT"); return symbol(sym.NOT);       }
-"and"           { System.out.println("AND"); return symbol(sym.AND);       }
-"="    { System.out.println("COMPARISON"); return symbol(sym.COMPARISON);}
-"("             { System.out.println("("); return symbol(sym.LPAREN);    }
-")"             { System.out.println(")"); return symbol(sym.RPAREN);    }
-"."             { System.out.println("."); return symbol(sym.PERIOD);    }
-","             { System.out.println(","); return symbol(sym.COMMA);     }
+";"             { System.out.print("; "); System.out.println(); return symbol(sym.SEMI);      }
+"from"          { System.out.print("FROM "); return symbol(sym.FROM);      }
+"distinct"      { System.out.print("DISTINCT "); return symbol(sym.DISTINCT);  }
+"select"        { System.out.print("SELECT "); return symbol(sym.SELECT);    }
+"where"         { System.out.print("WHERE "); return symbol(sym.WHERE);     }
+"exists"        { System.out.print("EXISTS "); return symbol(sym.EXISTS);    }
+"in"            { System.out.print("IN "); return symbol(sym.IN);        }
+"not"           { System.out.print("NOT "); return symbol(sym.NOT);       }
+"and"           { System.out.print("AND "); return symbol(sym.AND);       }
+"="             { System.out.print("COMPARISON "); return symbol(sym.COMPARISON);}
+"("             { System.out.print("( "); return symbol(sym.LPAREN);    }
+")"             { System.out.print(") "); return symbol(sym.RPAREN);    }
+"."             { System.out.print(". "); return symbol(sym.PERIOD);    }
+","             { System.out.print(", "); return symbol(sym.COMMA);     }
 
-
-{number}    { System.out.println("number: " + yytext()); return symbol(sym.INTNUM, new Integer(yytext())); }
-{ident}     { System.out.println("ident: " + yytext()); return symbol(sym.NAME, new String(yytext())); }
-{string}    { System.out.println("string: " + yytext()); return symbol(sym.STRING, new String(yytext())); }
+{number}    { System.out.print(yytext() + " "); return symbol(sym.INTNUM, new Integer(yytext())); }
+{ident}     { System.out.print(yytext() + " "); return symbol(sym.NAME, new String(yytext())); }
+{string}    { System.out.print(yytext() + " "); return symbol(sym.STRING, new String(yytext())); }
 {space}     { /* Ignore */ }
-{newline}   { /* Ignore */ }
+{newline}   { System.out.println(""); }
 
 }
 
