@@ -5,10 +5,10 @@
     This is a main file for WAE program
 */
 
-   
+
 import java.io.*;
 import java.util.*;
-   
+
 public class Main {
   static public void main(String argv[]) throws ArrayIndexOutOfBoundsException {
     /* Start the parser */
@@ -26,6 +26,7 @@ public class Main {
               userInput += inputList.get(i) + " ";
           }
           if (userInput.contains("exit")){
+              in.close();
               System.exit(1);
           }
           if (userInput.contains("@")){
