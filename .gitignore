@@ -1,0 +1,6 @@
+# ignores intellij resources
+/.idea
+CSC4340.iml
+
+# ignore class files as per standard with java
+*.class
