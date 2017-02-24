@@ -2,7 +2,7 @@
     Daniel Oh, John Wayne Creech
     CSC 4340
 
-    This is a main file for WAE program
+    This is Main file for project phase 1
 */
 
 
