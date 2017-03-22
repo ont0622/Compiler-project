@@ -4,3 +4,6 @@ CSC4340.iml
 
 # ignore class files as per standard with java
 *.class
+
+# ingore mac .DS_Store
+.DS_Store
