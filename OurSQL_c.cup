@@ -13,6 +13,8 @@ import java.io.*;
 import java.util.*;
 
 action code {:
+    File file = new File(".");
+    Database db = new Database();
 
 :}
 
@@ -111,7 +113,11 @@ non terminal Object comparison_pred, scalar_exp, literal, in_pred, exists_pred;
 ------------------------------------------------------------------------*/
 
 sql_start       ::= select_stmt SEMI
-                    {: System.out.println("No Syntax Error"); :}
+                    {:
+                        db.initializeDatabase(file.getAbsolutePath() + "\\db");
+                        db.displaySchema();
+                        System.out.println("No Syntax Error");
+                    :}
 ;
 
 select_stmt     ::= SELECT opt_distinct select_list from_clause opt_where_clause

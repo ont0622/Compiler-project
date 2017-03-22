@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class SQLNode{
     boolean distinct;
     ArrayList<Column> columns;
