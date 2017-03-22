@@ -1,3 +1,0 @@
-select a, b c
-from r, s
-where r.a=s.a;
