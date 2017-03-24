@@ -82,6 +82,14 @@ newline = \r|\n|\r\n
 "in"            { System.out.print("IN "); return symbol(sym.IN);        }
 "not"           { System.out.print("NOT "); return symbol(sym.NOT);       }
 "and"           { System.out.print("AND "); return symbol(sym.AND);       }
+"FROM"          { System.out.print("FROM "); return symbol(sym.FROM);      }
+"DISTINCT"      { System.out.print("DISTINCT "); return symbol(sym.DISTINCT);  }
+"SELECT"        { System.out.print("SELECT "); return symbol(sym.SELECT);    }
+"WHERE"         { System.out.print("WHERE "); return symbol(sym.WHERE);     }
+"EXISTS"        { System.out.print("EXISTS "); return symbol(sym.EXISTS);    }
+"IN"            { System.out.print("IN "); return symbol(sym.IN);        }
+"NOT"           { System.out.print("NOT "); return symbol(sym.NOT);       }
+"AND"           { System.out.print("AND "); return symbol(sym.AND);       }
 "="             { System.out.print("COMPARISON "); return symbol(sym.COMPARISON);}
 "("             { System.out.print("( "); return symbol(sym.LPAREN);    }
 ")"             { System.out.print(") "); return symbol(sym.RPAREN);    }

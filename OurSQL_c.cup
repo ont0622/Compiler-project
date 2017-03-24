@@ -115,8 +115,9 @@ non terminal Object comparison_pred, scalar_exp, literal, in_pred, exists_pred;
 sql_start       ::= select_stmt SEMI
                     {:
                         db.initializeDatabase(file.getAbsolutePath() + "\\db");
-                        db.displaySchema();
+                        System.out.println("No Semantic Error");
                         System.out.println("No Syntax Error");
+
                     :}
 ;
 
@@ -138,10 +139,25 @@ select_list     ::= column_ref:col
 ;
 
 column_ref      ::= NAME:n
-                    {: :}
+                    {:
+
+                    :}
                     |
                     NAME:n1 PERIOD NAME:n2
-                    {: :}
+                    {:
+                        db.initializeDatabase(file.getAbsolutePath() + "\\db");
+                        if(db.relationExists(n1.toUpperCase())){
+                            if(db.getRelation(n1.toUpperCase()).attributeExists(n2.toUpperCase())){
+                                RESULT = n1;
+                            }
+                            else{
+                               System.out.println("Semantic Error - Column " + n1 + " Not defined");
+                            }
+                        }
+                        else{
+                            System.out.println("Semantic Error - Relation " + n2 + " does not exist 2");
+                        }
+                    :}
 ;
 
 from_clause     ::= FROM table_ref_commalist
@@ -163,11 +179,15 @@ table_ref       ::= table
 ;
 
 table           ::= NAME:n
-                    {: :}
+                    {:
+
+                    :}
 ;
 
 range_variable  ::= NAME:n
-                    {: :}
+                    {:
+                        RESULT = n;
+                    :}
 ;
 
 opt_where_clause ::= where_clause
@@ -177,49 +197,61 @@ opt_where_clause ::= where_clause
 ;
 
 where_clause    ::= WHERE search_condition
+                    {:
+
+                    :}
+;
+
+search_condition ::= predicate:n
+                    {: :}
+                    |
+                    search_condition:n AND predicate:m
                     {: :}
 ;
 
-search_condition ::= predicate
+predicate       ::= pred:n
                     {: :}
                     |
-                    search_condition AND predicate
+                    NOT pred:n
                     {: :}
 ;
 
-predicate       ::= pred
+pred            ::= comparison_pred:n
                     {: :}
                     |
-                    NOT pred
+                    in_pred:n
+                    {: :}
+                    |
+                    exists_pred:n
                     {: :}
 ;
 
-pred            ::= comparison_pred
-                    {: :}
-                    |
-                    in_pred
-                    {: :}
-                    |
-                    exists_pred
-                    {: :}
+comparison_pred ::= scalar_exp:n COMPARISON scalar_exp:m
+                    {:
+
+                    :}
 ;
 
-comparison_pred ::= scalar_exp COMPARISON scalar_exp
-                    {: :}
-;
-
-scalar_exp      ::= literal
-                    {: :}
+scalar_exp      ::= literal:n
+                    {:
+                        RESULT = n;
+                    :}
                     |
-                    column_ref
-                    {: :}
+                    column_ref:n
+                    {:
+                        RESULT = n;
+                    :}
 ;
 
 literal         ::= STRING:n
-                    {: :}
+                    {:
+                        RESULT = n;
+                    :}
                     |
                     INTNUM:n
-                    {: :}
+                    {:
+                        RESULT = n;
+                    :}
 ;
 
 in_pred         ::= scalar_exp IN LPAREN select_stmt RPAREN
