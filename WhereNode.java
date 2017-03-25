@@ -6,7 +6,7 @@ public class WhereNode{
     private String leftOperandType;
     private String leftOperandPrefix;
     private String leftOperandName;
-    private SQLNode leftREsolveNode;
+    private SQLNode leftResolveNode;
     private int leftResolveIndex;
     private String leftOperandValue;
     private String comparison;
@@ -16,6 +16,10 @@ public class WhereNode{
     private SQLNode rightResolveNode;
     private int rightResolveIndex;
     private String rightOperandValue;
+
+    public WhereNode(){
+
+    }
 
     public boolean isNegated() {
         return negated;
@@ -73,12 +77,12 @@ public class WhereNode{
         this.leftOperandName = leftOperandName;
     }
 
-    public SQLNode getLeftREsolveNode() {
-        return leftREsolveNode;
+    public SQLNode getLeftResolveNode() {
+        return leftResolveNode;
     }
 
-    public void setLeftREsolveNode(SQLNode leftREsolveNode) {
-        this.leftREsolveNode = leftREsolveNode;
+    public void setLeftResolveNode(SQLNode leftResolveNode) {
+        this.leftResolveNode = leftResolveNode;
     }
 
     public int getLeftResolveIndex() {

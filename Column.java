@@ -4,17 +4,7 @@ public class Column{
     private SQLNode sn; //contains SQLNode where column resolves
     private int ci; //contains index of relations where column resolves
 
-    public Column(String prefix, String name, SQLNode sn, int ci){
-        this.prefix = prefix;
-        this.name = name;
-        this.sn = sn;
-        this.ci = ci;
-    }
-
-    public Column(String name, SQLNode sn, int ci){
-        this.name = name;
-        this.sn = sn;
-        this.ci = ci;
+    public Column(){
     }
 
     public String getPrefix() {
