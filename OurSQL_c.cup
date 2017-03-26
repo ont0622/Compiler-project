@@ -341,7 +341,11 @@ literal         ::= STRING:n
 
 in_pred         ::= scalar_exp:scale IN LPAREN select_stmt:select RPAREN
                     {:
-
+                        WhereNode where = new WhereNode();
+                        where.setLeftOperand(scale);
+                        where.setNestingType("in");
+                        where.setRightResolveNode(select);
+                        RESULT = where;
                     :}
 ;
 
