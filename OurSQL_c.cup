@@ -86,13 +86,13 @@ terminal String     STRING, NAME, COMPARISON, INTNUM;
 non terminal SQLNode sql_start, select_stmt;
 non terminal boolean opt_distinct;
 non terminal ArrayList<Column> select_list;
-non terminal /**/ from_clause;
+non terminal ArrayList<String[]> from_clause, table_ref_commalist;
 non terminal Column column_ref;
-non terminal /**/ table_ref_commalist, table_ref, table, range_variable, search_condition,
+non terminal String scalar_exp, literal, table, range_variable;
+non terminal String[] table_ref;
 non terminal WhereNode predicate, pred;
-non terminal WhereNode comparison_pred, scalar_exp, literal, in_pred, exists_pred;
-non terminal WhereNode where_clause;
-non temrinal WhereNode where_clause;
+non terminal WhereNode comparison_pred, in_pred, exists_pred;
+non terminal WhereNode where_clause, search_condition;
 
 /*------------------------------ Grammar ------------------------------*/
 /*
@@ -192,27 +192,43 @@ column_ref      ::= NAME:n
                     :}
 ;
 
-from_clause     ::= FROM table_ref_commalist
-                    {: :}
+from_clause     ::= FROM table_ref_commalist:table
+                    {:
+                        RESULT = table;
+                    :}
 ;
 
-table_ref_commalist ::= table_ref
-                    {: :}
+table_ref_commalist ::= table_ref:table
+                    {:
+                        ArrayList<String[]> tab = new ArrayList<String[]>();
+                        tab.add(table);
+                        RESULT = tab;
+                    :}
                     |
-                    table_ref_commalist COMMA table_ref
-                    {: :}
+                    table_ref_commalist:list COMMA table_ref:table
+                    {:
+                        ArrayList<String[]> tab = list;
+                        tab.add(table);
+                        RESULT = tab;
+                    :}
 ;
 
-table_ref       ::= table
-                    {: :}
+table_ref       ::= table:tab
+                    {:
+                        String[] s = {tab, ""};
+                        RESULT = s;
+                    :}
                     |
-                    table range_variable
-                    {: :}
+                    table:tab range_variable:range
+                    {:
+                        String[] s = {tab, range};
+                        RESULT = s;
+                    :}
 ;
 
 table           ::= NAME:n
                     {:
-
+                        RESULT = n;
                     :}
 ;
 
@@ -222,33 +238,45 @@ range_variable  ::= NAME:n
                     :}
 ;
 
-opt_where_clause ::= where_clause
-                     {: :}
+opt_where_clause ::= where_clause:where
+                     {:
+                        RESULT = where;
+                     :}
                      |
                      /* empty */
 ;
 
-where_clause    ::= WHERE search_condition
+where_clause    ::= WHERE search_condition:search
                     {:
-
+                        WhereNode where = search;
+                        RESULT = search;
                     :}
 ;
 
 search_condition ::= predicate:n
-                    {: :}
+                    {:
+                        WhereNode where = n;
+                        RESULT = where;
+                    :}
                     |
                     search_condition:n AND predicate:m
-                    {: :}
+                    {:
+                        WhereNode where = m;
+                        where.subQuery(n);
+                        RESULT = where;
+                    :}
 ;
 
 predicate       ::= pred:n
-                    {: :}
+                    {:
+                        RESULT = n;
+                    :}
                     |
                     NOT pred:n
                     {:
-                        WhereNode where = new WhereNode();
+                        WhereNode where = n;
                         where.setNegated(true);
-
+                        RESULT = where;
                      :}
 ;
 
@@ -279,7 +307,9 @@ comparison_pred ::= scalar_exp:n COMPARISON:comp scalar_exp:m
                     {:
                         WhereNode where = new WhereNode();
                         where.setLeftOperand(n);
-                        where.setc
+                        where.setRightOperand(m);
+                        where.setComparison(comp);
+                        RESULT = where;
                     :}
 ;
 
@@ -310,7 +340,9 @@ literal         ::= STRING:n
 ;
 
 in_pred         ::= scalar_exp:scale IN LPAREN select_stmt:select RPAREN
-                    {: :}
+                    {:
+
+                    :}
 ;
 
 exists_pred     ::= EXISTS LPAREN select_stmt:select RPAREN

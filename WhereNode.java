@@ -2,7 +2,7 @@ public class WhereNode{
     private boolean negated;
     private boolean nested;
     private String nestingType;
-    private SQLNode subQuery;
+    private WhereNode subQuery;
     private String leftOperandType;
     private String leftOperandPrefix;
     private String leftOperandName;
@@ -45,11 +45,11 @@ public class WhereNode{
         this.nestingType = nestingType;
     }
 
-    public SQLNode getSubQuery() {
+    public WhereNode getSubQuery() {
         return subQuery;
     }
 
-    public void setSubQuery(SQLNode subQuery) {
+    public void setSubQuery(WhereNode subQuery) {
         this.subQuery = subQuery;
     }
 
