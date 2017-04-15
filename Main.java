@@ -47,13 +47,15 @@ public class Main {
             fileName += ".txt";
             System.out.println("File name: " + fileName);
             parser p = new parser(new Lexer(new FileReader(fileName)));
-            SQLNode result = p.parse().value;
+            Object result = p.parse().value;
+              System.out.println(result);
           }
           //otherwise it will parse with input string
           else {
             Reader reader = new StringReader(userInput);
             parser p = new parser(reader);
-            SQLNode result = p.parse().value;
+            Object result = p.parse().value;
+              System.out.println(result);
           }
       } catch (Error e) {
         e.printStackTrace();
@@ -62,6 +64,5 @@ public class Main {
       } catch (Exception e) {
         e.printStackTrace();
       }
-
     }
 }
