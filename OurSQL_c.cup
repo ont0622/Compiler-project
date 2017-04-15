@@ -353,5 +353,6 @@ exists_pred     ::= EXISTS LPAREN select_stmt:select RPAREN
                     {:
                         WhereNode where = new WhereNode();
                         where.setSubQuery(select);
+                        RESULT = where;
                     :}
 ;
