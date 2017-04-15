@@ -52,8 +52,4 @@ public class SQLNode{
     public void setParent(SQLNode parent) {
         this.parent = parent;
     }
-
-    public SQLNode eval(){
-
-    }
 }
