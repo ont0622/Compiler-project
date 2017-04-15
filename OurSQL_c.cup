@@ -327,14 +327,26 @@ scalar_exp      ::= literal:n
 literal         ::= STRING:n
                     {:
                         WhereNode where = new WhereNode();
-                        where.set(n);
+                        if(where.getLeftOperand() == null){
+                            where.setLeftOperand(n);
+                            where.setLeftOperandType("STRING");
+                        }else{
+                            where.setRightOperand(n);
+                            where.setRightOperandType("STRING");
+                        }
                         RESULT = where;
                     :}
                     |
                     INTNUM:n
                     {:
                         WhereNode where = new WhereNode();
-                        where.set(n);
+                        if(where.getLeftOperand() == null){
+                            where.setLeftOperand(n);
+                            where.setLeftOperandType("INTNUM");
+                        }else{
+                            where.setRightOperand(n);
+                            where.setRightOperandType("INTNUM");
+                        }
                         RESULT = where;
                     :}
 ;
@@ -353,5 +365,6 @@ exists_pred     ::= EXISTS LPAREN select_stmt:select RPAREN
                     {:
                         WhereNode where = new WhereNode();
                         where.setSubQuery(select);
+                        RESULT = where;
                     :}
 ;
